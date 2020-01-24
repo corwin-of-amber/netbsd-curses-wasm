@@ -40,10 +40,14 @@
         __asm__(".global " __STRING(alias) " ; " __STRING(alias)        \
             " = " __STRING(sym)) ;
 #else
+#ifndef __APPLE__
 #undef myweak_alias
 #define myweak_alias(old, new) \
         extern __typeof(old) new __attribute__((weak, alias(#old)))
 #define __strong_alias(new, old) myweak_alias(old, new);
+#else
+#define __strong_alias(new, old) ;
+#endif
 #endif
 #ifndef _DIAGASSERT
 #define _DIAGASSERT(x)

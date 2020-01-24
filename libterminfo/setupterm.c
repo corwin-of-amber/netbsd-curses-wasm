@@ -46,6 +46,10 @@
  */
 #include <curses.h>
 
+#ifdef __wasi__
+#define ioctl __wasi_tty_ioctl
+#endif
+
 static bool __use_env = true;
 
 void

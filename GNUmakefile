@@ -21,6 +21,8 @@ MAN3DIR=$(MANDIR)/man3
 
 -include config.mak
 
+CPPFLAGS += -D__pure= -D_WASI_EMULATED_MMAN -fblocks
+
 ifneq ($(HOSTCC),$(CC))
 CROSSCOMPILING=1
 else
@@ -471,7 +473,8 @@ $(TI_LIBA): $(TI_OBJS)
 	$(RANLIB) $@
 
 $(TI_LIBSO): $(TI_LOBJS)
-	$(CC) -shared -o $@ $^ -Wl,-soname=$(notdir $@)
+	$(CC) -shared -o $@ $^
+#	-Wl,-soname=$(notdir $@)
 
 libterminfo/hash.c: libterminfo/genhash libterminfo/term.h
 		@echo "Generating terminfo hash"
@@ -508,7 +511,8 @@ $(CU_LIBA): $(CU_OBJS)
 
 $(CU_LIBSO): $(TI_LIBSO)
 $(CU_LIBSO): $(CU_LOBJS)
-	$(CC) -shared -o $@ $^ -Wl,-soname=$(notdir $@)
+	$(CC) -shared -o $@ $^
+#   	-Wl,-soname=$(notdir $@)
 
 libcurses/fileio.h: libcurses/shlib_version libcurses/genfileioh.awk
 	$(AWK) -f ./genfileioh.awk < ./shlib_version > ./fileio.h
@@ -520,7 +524,8 @@ $(PA_LIBA): $(PA_OBJS)
 
 $(PA_LIBSO): $(CU_LIBSO)
 $(PA_LIBSO): $(PA_LOBJS)
-	$(CC) -shared -o $@ $^ -Wl,-soname=$(notdir $@)
+	$(CC) -shared -o $@ $^
+#   	-Wl,-soname=$(notdir $@)
 
 $(ME_LIBA): $(ME_OBJS)
 	rm -f $@
@@ -529,7 +534,8 @@ $(ME_LIBA): $(ME_OBJS)
 
 $(ME_LIBSO): $(CU_LIBSO)
 $(ME_LIBSO): $(ME_LOBJS)
-	$(CC) -shared -o $@ $^ -Wl,-soname=$(notdir $@)
+	$(CC) -shared -o $@ $^
+#   	-Wl,-soname=$(notdir $@)
 
 $(FO_LIBA): $(FO_OBJS)
 	rm -f $@
@@ -538,7 +544,8 @@ $(FO_LIBA): $(FO_OBJS)
 
 $(FO_LIBSO): $(CU_LIBSO)
 $(FO_LIBSO): $(FO_LOBJS)
-	$(CC) -shared -o $@ $^ -Wl,-soname=$(notdir $@)
+	$(CC) -shared -o $@ $^
+#   	-Wl,-soname=$(notdir $@)
 
 # Allow terminfo descriptions to be compiled into libterminfo
 ${TERMINFODIR}/terminfo.cdb: $(TOOL_TIC) ${TERMINFODIR}/terminfo

@@ -593,7 +593,7 @@ isendwin(void)
 	return _cursesi_screen->endwin ? TRUE : FALSE;
 }
 #ifndef __FreeBSD__
-static int fpurge(FILE *f) {
+int fpurge(FILE *f) {
 	//dprintf(666, "warning: called fpurge\n");
 	fflush(f);
 	return 0;

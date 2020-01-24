@@ -78,7 +78,7 @@ _ti_calcdelay(const char **str, int affcnt, int *mand)
 
 static void
 _ti_outputdelay(int delay, short os, char pc,
-    int (*outc)(int, void *), void *args)
+    int (^outc)(int, void *), void *args)
 {
 	int mspc10;
 
@@ -93,7 +93,7 @@ _ti_outputdelay(int delay, short os, char pc,
 
 static int
 _ti_puts(int dodelay, short os, char pc,
-    const char *str, int affcnt, int (*outc)(int, void *), void *args)
+    const char *str, int affcnt, int (^outc)(int, void *), void *args)
 {
 	int taildelay, delay, mand;
 
@@ -146,7 +146,7 @@ ti_puts(const TERMINAL *term, const char *str, int affcnt,
 	else
 	    pc = *t_pad_char(term);
 	return _ti_puts(dodelay, term->_ospeed, pc,
-	    str, affcnt, outc, args);
+	    str, affcnt, ^(int a, void* d) { return outc(a, d); }, args);
 }
 
 int
@@ -161,11 +161,10 @@ ti_putp(const TERMINAL *term, const char *str)
 int
 tputs(const char *str, int affcnt, int (*outc)(int))
 {
-
 	_DIAGASSERT(str != NULL);
 	_DIAGASSERT(outc != NULL);
 	return _ti_puts(1, ospeed, PC, str, affcnt,
-	    (int (*)(int, void *))outc, NULL);
+	    ^(int a, void* d) { return outc(a); }, NULL);
 }
 
 int

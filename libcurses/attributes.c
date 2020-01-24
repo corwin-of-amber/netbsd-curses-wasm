@@ -201,7 +201,9 @@ wattr_set(WINDOW *win, attr_t attr, short pair, void *opts)
 	 */
 	attr = (attr & ~__COLOR) | COLOR_PAIR(pair);
 
+#ifdef HAVE_WCHAR
 	__wattr_off(win, WA_ATTRIBUTES);
+#endif
 	__wattr_on(win, attr);
 	return OK;
 }

@@ -4,6 +4,10 @@
 *.so
 *.a
 *.xz
+*.wo
+*.wa
+.*.swp
+/wasi
 infocmp/infocmp
 tabs/tabs
 nbperf/nbperf
